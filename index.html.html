@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Word Creator</title>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<style>
+
+
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+  }
+
+  .container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    scrollbar-width: thin;
+    position: relative;
+  }
+
+  .chat-box {
+    max-width: 600px;
+    margin: 30px auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    position: relative;
+  }
+
+  @media (max-width:600px) {
+    .chat-box {
+      max-width: calc(96% - 4px);
+      border: solid 1px #ccc;
+      margin: 30px auto;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+    }
+  }
+
+  .header {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    align-items: center;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .messages {
+    padding: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .message {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    max-width: 70%;
+
+  }
+
+  .incoming {
+    background-color: #f2f2f2;
+    align-self: flex-start;
+  }
+
+  .outgoing {
+    background-color: #007bff;
+    color: #fff;
+    align-self: flex-end;
+  }
+
+  .date {
+    font-size: 12px;
+    color: #777;
+  }
+
+  .input-box {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  .input-box input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .input-box button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .copy-clip{
+    cursor: pointer;
+    position: relative;
+  }
+  .fa-solid{
+    color: #333;
+  }
+  .copied{
+    position: absolute;
+z-index: 1;
+color: black;
+top: -18px;
+right: 10px;
+display: none;
+  }
+  .messages p{
+    text-transform: none;
+    text-overflow:ellipsis;
+  }
+</style>
+
+<body>
+  <div class="container">
+
+    <div class="chat-box">
+      <div class="header">
+        <div class="header-name">Random Word Creator</div>
+        <div class="copy-clip"><i class="fa-regular fa-copy"></i> <span class="copied">copied</span></div>
+      </div>
+      <div class="messages">
+       <p> Generate random word..</p>
+      </div>
+      <div class="input-box">
+        <input type="number" id="messages_share_textarea" placeholder="Type your length...">
+        <div class="count">0</div>
+        <button class="ResetAll">Reset</button>
+        <button class="create-word">Create</button>
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="jquery-3.6.0.min.js"></script>
+  <script>
+    $('.copy-clip').on('click',function(){
+        $(this).children('i').addClass('fa-solid');
+        $(this).children('i').removeClass('fa-regular');
+        $('.copied').show();
+     setTimeout(() => {
+      $('.copied').hide();
+     }, 1000);
+     var textToCopy = $(".messages p").text();
+        
+        // Create a temporary textarea element to hold the text
+        var tempTextarea = $("<textarea>");
+        $("body").append(tempTextarea);
+        
+        // Set the text of the textarea to the text you want to copy
+        tempTextarea.val(textToCopy).select();
+        
+        // Copy the text from the textarea to the clipboard
+        document.execCommand("copy");
+        
+        // Remove the temporary textarea
+        tempTextarea.remove();
+    });
+
+    function countWord(){
+      // var divElement = document.querySelector(".messages p");
+      var textInput = document.querySelector('.count');
+        
+      var divText = document.querySelector(".messages p").textContent;
+        var wordCount = divText.trim().split(/\s+/).length;
+        // alert("Word count: " + wordCount);
+        textInput.innerText=wordCount;
+    }
+
+
+    document.querySelector('.create-word').addEventListener('click', function() {
+
+var length = document.getElementById('messages_share_textarea');
+var divElement = document.querySelector(".messages p");
+
+function getRandomParagraph() {
+  var words = [
+    "Amidst",'I','i','you','me','apple','doing','confer','give','he','she','study','Indian','freedom','independent','glass', 'forest','conspire','them','they','who','by','with',"bustling", "city", "streets", "sense", "tranquility",
+    "emerged", "sun", "dipped", "horizon", "warm", "hues", "orange",
+    "pink", "painted", "sky", "casting", "soothing", "glow", "urban",
+    "landscape", "Pedestrians", "strolled", "leisurely", "sidewalks",
+    "footsteps", "harmonizing", "distant", "hum", "traffic", "gentle",
+    "breeze", "rustled", "trees", "carrying", "fragrant", "whispers",
+    "blooming", "flowers", "ephemeral", "moment", "time", "seemed",
+    "slow", "inviting", "pause", "appreciate", "simple", "beauty",
+    "surrounded", "them"
+  ];
+
+  var paragraphLength = length.value;
+  var paragraph = "";
+
+  for (let i = 0; i < paragraphLength; i++) {
+    var randomIndex = Math.floor(Math.random() * words.length);
+    paragraph += words[randomIndex] + " ";
+
+  }
+  divElement.textContent = paragraph;
+  // console.log(paragraph)
+
+
+  return paragraph.trim();
+}
+getRandomParagraph();
+countWord();
+});
+
+window.onload=function(){
+  
+  ResetFunction();
+}
+  var reset=document.querySelector('.ResetAll');
+  reset.onclick=ResetFunction;
+
+  function ResetFunction(){
+  document.getElementById('messages_share_textarea').value='';
+  document.querySelector(".messages p").innerText='';
+  document.querySelector('.count').innerText='00';
+  $('.copy-clip').children('i').addClass('fa-regular');
+  $('.copy-clip').children('i').removeClass('fa-solid');
+  }
+  </script>
+</body>
+
+</html>
